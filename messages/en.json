@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "solutions": "Solutions",
+    "customers": "Customers",
+    "partners": "Partners",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "badge": "Leaders in Medical Coding",
+    "title": "Transforming Medical Data into Sustainable Revenue",
+    "subtitle": "Comprehensive medical coding, revenue cycle management, and digital transformation solutions for Saudi Arabian healthcare facilities",
+    "cta_primary": "Explore Our Services",
+    "cta_secondary": "Contact Us"
+  },
+  "stats": {
+    "clients": "Satisfied Clients",
+    "accuracy": "Coding Accuracy",
+    "experience": "Years of Experience",
+    "revenue": "Million SAR Revenue Achieved"
+  },
+  "services": {
+    "title": "Our Specialized Services",
+    "subtitle": "We offer a comprehensive range of medical coding and health information management services",
+    "view_all": "View All Services",
+    "learn_more": "Learn More"
+  },
+  "solutions": {
+    "title": "Our Innovative Solutions",
+    "subtitle": "Integrated digital solutions designed specifically for Saudi healthcare facility needs",
+    "view_all": "View All Solutions"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Leading Medical Coding in the Kingdom",
+    "description": "DigiMind is a Saudi company specializing in medical coding and revenue cycle management solutions for healthcare facilities in Saudi Arabia. We drive healthcare digital transformation through our expertise in ICD-10, PLICS, and health information systems.",
+    "mission_title": "Our Mission",
+    "mission": "To elevate medical coding quality and maximize financial recovery rates for healthcare facilities through efficiency, innovation, and compliance with international standards.",
+    "vision_title": "Our Vision",
+    "vision": "To be the most trusted partner for every healthcare facility in the Kingdom on its journey toward digital transformation and excellence in health information management.",
+    "values_title": "Our Values"
+  },
+  "customers": {
+    "title": "Our Customers",
+    "subtitle": "We are proud of the trust placed in us by the Kingdom's leading healthcare facilities"
+  },
+  "partners": {
+    "title": "Our Partners",
+    "subtitle": "Strategic partnerships with leading government and professional bodies"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help. Reach out and our team will respond within 24 hours",
+    "name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "company": "Organization Name",
+    "message": "Your Message",
+    "submit": "Send Message",
+    "success": "Your message was sent successfully! We will reach out soon.",
+    "error": "An error occurred. Please try again.",
+    "info_title": "Contact Information",
+    "address": "Address",
+    "working_hours": "Working Hours",
+    "working_hours_val": "Sunday - Thursday: 8 AM - 5 PM"
+  },
+  "footer": {
+    "description": "Leaders in medical coding and revenue cycle management solutions for healthcare facilities in Saudi Arabia",
+    "quick_links": "Quick Links",
+    "services": "Our Services",
+    "contact_us": "Contact Us",
+    "rights": "All Rights Reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "common": {
+    "read_more": "Read More",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "not_found": "Page Not Found",
+    "home": "Home"
+  }
+}

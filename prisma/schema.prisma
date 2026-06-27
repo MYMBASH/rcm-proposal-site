@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Admin Users
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Site Settings
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// Pages
+model Page {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  titleAr   String
+  titleEn   String
+  status    String    @default("draft")
+  sections  Section[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  pageId    String
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  order     Int      @default(0)
+  contentAr String
+  contentEn String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Navigation
+model MenuItem {
+  id        String     @id @default(cuid())
+  labelAr   String
+  labelEn   String
+  url       String?
+  pageSlug  String?
+  parentId  String?
+  parent    MenuItem?  @relation("MenuTree", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuTree")
+  order     Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// Media
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  type      String
+  altAr     String   @default("")
+  altEn     String   @default("")
+  filename  String
+  size      Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+// Banners
+model Banner {
+  id          String   @id @default(cuid())
+  titleAr     String
+  titleEn     String
+  subtitleAr  String   @default("")
+  subtitleEn  String   @default("")
+  imageUrl    String   @default("")
+  linkUrl     String   @default("")
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Services
+model Service {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titleAr       String
+  titleEn       String
+  descriptionAr String
+  descriptionEn String
+  icon          String   @default("")
+  imageUrl      String   @default("")
+  videoUrl      String   @default("")
+  pdfUrl        String   @default("")
+  order         Int      @default(0)
+  status        String   @default("published")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Solutions
+model Solution {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titleAr       String
+  titleEn       String
+  descriptionAr String
+  descriptionEn String
+  icon          String   @default("")
+  imageUrl      String   @default("")
+  videoUrl      String   @default("")
+  pdfUrl        String   @default("")
+  order         Int      @default(0)
+  status        String   @default("published")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Customers
+model Customer {
+  id         String   @id @default(cuid())
+  name       String
+  logo       String   @default("")
+  websiteUrl String   @default("")
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Partners
+model Partner {
+  id            String   @id @default(cuid())
+  name          String
+  logo          String   @default("")
+  websiteUrl    String   @default("")
+  descriptionAr String   @default("")
+  descriptionEn String   @default("")
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Testimonials
+model Testimonial {
+  id        String   @id @default(cuid())
+  nameAr    String
+  nameEn    String
+  roleAr    String   @default("")
+  roleEn    String   @default("")
+  companyAr String   @default("")
+  companyEn String   @default("")
+  contentAr String
+  contentEn String
+  avatarUrl String   @default("")
+  rating    Int      @default(5)
+  order     Int      @default(0)
+  status    String   @default("published")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// News Posts
+model NewsPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  titleAr     String
+  titleEn     String
+  summaryAr   String   @default("")
+  summaryEn   String   @default("")
+  contentAr   String   @default("")
+  contentEn   String   @default("")
+  imageUrl    String   @default("")
+  videoUrl    String   @default("")
+  category    String   @default("news")
+  status      String   @default("draft")
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Social Links
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String
+  url       String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Job Postings
+model JobPosting {
+  id             String           @id @default(cuid())
+  titleAr        String
+  titleEn        String
+  descriptionAr  String
+  descriptionEn  String
+  locationAr     String           @default("")
+  locationEn     String           @default("")
+  type           String           @default("full-time")
+  status         String           @default("open")
+  applications   JobApplication[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+// Job Applications
+model JobApplication {
+  id         String     @id @default(cuid())
+  jobId      String
+  job        JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  name       String
+  email      String
+  phone      String     @default("")
+  cvUrl      String     @default("")
+  coverLetter String    @default("")
+  status     String     @default("new")
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+// Contact Submissions
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String   @default("")
+  subject   String   @default("")
+  message   String
+  status    String   @default("unread")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

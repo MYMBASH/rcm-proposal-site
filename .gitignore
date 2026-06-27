@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env
+*.db
+*.db-journal
+/public/uploads/*
+!public/uploads/.gitkeep
+dist/
+.vercel/
+DIGIMI_3/
+.next-start*.log
