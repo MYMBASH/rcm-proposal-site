@@ -25,7 +25,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale, slug } }: Props): Promise<Metadata> {
-  const post = await prisma.newsPost.findUnique({ where: { slug } });
+  const post = hasPostgresDatabaseUrl()
+    ? await prisma.newsPost.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!post) return { title: 'Not Found' };
   const isAr = locale === 'ar';
   const title   = isAr ? post.titleAr   : post.titleEn;
@@ -59,7 +61,9 @@ export async function generateMetadata({ params: { locale, slug } }: Props): Pro
 }
 
 export default async function NewsArticlePage({ params: { locale, slug } }: Props) {
-  const post = await prisma.newsPost.findUnique({ where: { slug } });
+  const post = hasPostgresDatabaseUrl()
+    ? await prisma.newsPost.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!post || post.status !== 'published') notFound();
 
   const isAr    = locale === 'ar';

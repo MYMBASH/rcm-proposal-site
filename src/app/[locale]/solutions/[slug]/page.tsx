@@ -20,13 +20,17 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string; slug: string } }): Promise<Metadata> {
-  const solution = await prisma.solution.findUnique({ where: { slug } });
+  const solution = hasPostgresDatabaseUrl()
+    ? await prisma.solution.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!solution) return {};
   return { title: locale === 'ar' ? solution.titleAr : solution.titleEn };
 }
 
 export default async function SolutionDetailPage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
-  const solution = await prisma.solution.findUnique({ where: { slug } });
+  const solution = hasPostgresDatabaseUrl()
+    ? await prisma.solution.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!solution) notFound();
   const isAr = locale === 'ar';
   const title = isAr ? solution.titleAr : solution.titleEn;

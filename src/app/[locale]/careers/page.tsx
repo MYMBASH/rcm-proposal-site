@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import MainLayout from '@/components/layout/MainLayout';
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 import JobApplicationForm from '@/components/shared/JobApplicationForm';
 import { MapPin, Clock, Briefcase } from 'lucide-react';
 
@@ -15,10 +15,12 @@ const TYPE_LABELS: Record<string, { ar: string; en: string }> = {
 
 export default async function CareersPage({ params: { locale } }: { params: { locale: string } }) {
   const isAr = locale === 'ar';
-  const jobs = await prisma.jobPosting.findMany({
-    where: { status: 'open' },
-    orderBy: { createdAt: 'asc' },
-  });
+  const jobs = hasPostgresDatabaseUrl()
+    ? await prisma.jobPosting.findMany({
+        where: { status: 'open' },
+        orderBy: { createdAt: 'asc' },
+      }).catch(() => [])
+    : [];
 
   return (
     <MainLayout>

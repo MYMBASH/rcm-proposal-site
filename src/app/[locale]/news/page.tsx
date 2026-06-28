@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 import { Calendar, Tag, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
@@ -16,10 +16,12 @@ const CATEGORY_LABELS: Record<string, { ar: string; en: string; color: string }>
 
 export default async function NewsPage({ params: { locale } }: { params: { locale: string } }) {
   const isAr = locale === 'ar';
-  const posts = await prisma.newsPost.findMany({
-    where: { status: 'published' },
-    orderBy: { publishedAt: 'desc' },
-  });
+  const posts = hasPostgresDatabaseUrl()
+    ? await prisma.newsPost.findMany({
+        where: { status: 'published' },
+        orderBy: { publishedAt: 'desc' },
+      }).catch(() => [])
+    : [];
 
   return (
     <MainLayout>

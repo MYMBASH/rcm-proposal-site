@@ -13,7 +13,7 @@ async function getServices(locale: string) {
     where: { status: 'published' },
     orderBy: { order: 'asc' },
     take: 6,
-  });
+  }).catch(() => []);
   return services;
 }
 

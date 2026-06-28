@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import MainLayout from '@/components/layout/MainLayout';
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Handshake } from 'lucide-react';
 
@@ -9,7 +9,9 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default async function PartnersPage({ params: { locale } }: { params: { locale: string } }) {
-  const partners = await prisma.partner.findMany({ orderBy: { order: 'asc' } });
+  const partners = hasPostgresDatabaseUrl()
+    ? await prisma.partner.findMany({ orderBy: { order: 'asc' } }).catch(() => [])
+    : [];
   const isAr = locale === 'ar';
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 

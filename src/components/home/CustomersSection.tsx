@@ -1,7 +1,9 @@
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 
 export default async function CustomersSection({ locale }: { locale: string }) {
-  const customers = await prisma.customer.findMany({ orderBy: { order: 'asc' } });
+  const customers = hasPostgresDatabaseUrl()
+    ? await prisma.customer.findMany({ orderBy: { order: 'asc' } }).catch(() => [])
+    : [];
   const isAr = locale === 'ar';
 
   return (

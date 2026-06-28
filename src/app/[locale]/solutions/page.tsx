@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 import { type LucideIcon, Search, Target, ShieldCheck, PieChart, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const ICONS: Record<string, LucideIcon> = {
@@ -13,7 +13,9 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default async function SolutionsPage({ params: { locale } }: { params: { locale: string } }) {
-  const solutions = await prisma.solution.findMany({ where: { status: 'published' }, orderBy: { order: 'asc' } });
+  const solutions = hasPostgresDatabaseUrl()
+    ? await prisma.solution.findMany({ where: { status: 'published' }, orderBy: { order: 'asc' } }).catch(() => [])
+    : [];
   const isAr = locale === 'ar';
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 

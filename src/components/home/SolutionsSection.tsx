@@ -12,7 +12,7 @@ export default async function SolutionsSection({ locale }: { locale: string }) {
         where: { status: 'published' },
         orderBy: { order: 'asc' },
         take: 4,
-      })
+      }).catch(() => [])
     : [];
   const isAr = locale === 'ar';
 

@@ -20,13 +20,17 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string; slug: string } }): Promise<Metadata> {
-  const service = await prisma.service.findUnique({ where: { slug } });
+  const service = hasPostgresDatabaseUrl()
+    ? await prisma.service.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!service) return {};
   return { title: locale === 'ar' ? service.titleAr : service.titleEn };
 }
 
 export default async function ServiceDetailPage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
-  const service = await prisma.service.findUnique({ where: { slug } });
+  const service = hasPostgresDatabaseUrl()
+    ? await prisma.service.findUnique({ where: { slug } }).catch(() => null)
+    : null;
   if (!service) notFound();
   const isAr = locale === 'ar';
   const title = isAr ? service.titleAr : service.titleEn;

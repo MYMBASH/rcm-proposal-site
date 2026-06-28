@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
-import { prisma } from '@/lib/prisma';
+import { hasPostgresDatabaseUrl, prisma } from '@/lib/prisma';
 import { type LucideIcon, FileText, TrendingUp, BarChart3, Database, Zap, GraduationCap, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const ICONS: Record<string, LucideIcon> = {
@@ -15,7 +15,9 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 }
 
 export default async function ServicesPage({ params: { locale } }: { params: { locale: string } }) {
-  const services = await prisma.service.findMany({ where: { status: 'published' }, orderBy: { order: 'asc' } });
+  const services = hasPostgresDatabaseUrl()
+    ? await prisma.service.findMany({ where: { status: 'published' }, orderBy: { order: 'asc' } }).catch(() => [])
+    : [];
   const isAr = locale === 'ar';
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 
